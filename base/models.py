@@ -26,7 +26,8 @@ class Khoa(BaseModel):
     TenKhoa = models.CharField(max_length=100)
 
 class GiangVien(BaseModel):  
-    MaGV = models.CharField(max_length=50, unique=True) 
+    UserAccount = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    MaGV = models.CharField(max_length=50, unique=True,primary_key=True) 
     HoTen = models.CharField(max_length=100)
     DienThoai = models.CharField(max_length=20)
     Email = models.EmailField()
@@ -38,7 +39,8 @@ class Lop(BaseModel):
     MaGV = models.ForeignKey(GiangVien, on_delete=models.SET_NULL, null=True, blank=True)
 
 class SinhVien(BaseModel):  
-    Msv = models.CharField(max_length=50, unique=True) 
+    UserAccount = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    Msv = models.CharField(max_length=50, unique=True,primary_key=True) 
     Ten = models.CharField(max_length=100)
     NgaySinh = models.DateField()
     GioiTinh = models.CharField(max_length=10)
@@ -61,55 +63,64 @@ class SinhVien(BaseModel):
     TenCha = models.CharField(max_length=100, null=True, blank=True)
     TenMe = models.CharField(max_length=100, null=True, blank=True)
     NgheNghiepCha = models.CharField(max_length=100, null=True, blank=True)
-    NgheNghiepMe = models.CharField(maxlength=100, null=True, blank=True)
+    NgheNghiepMe = models.CharField(max_length=100, null=True, blank=True)
     DienThoaiCha = models.CharField(max_length=20, null=True, blank=True)
-    DienThoaiMe = models.CharField(maxlength=20, null=True, blank=True)
+    DienThoaiMe = models.CharField(max_length=20, null=True, blank=True)
     EmailCha = models.EmailField(null=True, blank=True)
     EmailMe = models.EmailField(null=True, blank=True)
     HoKhauCha = models.TextField(null=True, blank=True)
     HoKhauMe = models.TextField(null=True, blank=True)
     Status = models.CharField(max_length=50)
-    MaKhoa = models.foreignKey(Khoa, on_delete=models.SET_NULL, null=True, blank=True)
+    MaKhoa = models.ForeignKey(Khoa, on_delete=models.SET_NULL, null=True, blank=True)
     MaGiangVien = models.ForeignKey(GiangVien, on_delete=models.SET_NULL, null=True, blank=True)
-    HinhThucDaoTao = models.CharField(maxlength=100)
-
-class UserAccount(BaseModel, AbstractBaseUser, PermissionsMixin): 
-    username = models.CharField(maxlength=255) 
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.CharField(maxlength=50)
-    associated_object = GenericForeignKey('content_type', 'object_id')
-    UserStatus = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
-    USERNAME_FIELD = 'username'
-    last_login = None
-    email = None
+    HinhThucDaoTao = models.CharField(max_length=100)
 
 class UserAccountManager(BaseUserManager):
-    def create_user(self, username, content_type, object_id, password=None):
+    def create_user(self, username, password=None):
         if not username:
             raise ValueError('Users must have a username')
 
-        user = self.model(
-            username=username,
-            content_type=content_type,
-            object_id=object_id,
-        )
-
+        user = self.model(username=username)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, content_type, object_id, password=None):
-        user = self.create_user(
-            username=username,
-            content_type=content_type,
-            object_id=object_id,
-            password=password,
-        )
+    def create_superuser(self, username, password=None):
+        user = self.create_user(username=username, password=password)
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
         return user
 
-UserAccount.objects = UserAccountManager()
+    def get_by_natural_key(self, username):
+        return self.get(username=username)
+
+class UserAccount(BaseModel, AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=255, unique=True,primary_key=True)
+    UserStatus = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []
+
+    objects = UserAccountManager()
+
+    def __str__(self):
+        return self.username
+
+    def get_full_name(self):
+        return self.username
+
+    def get_short_name(self):
+        return self.username
+
+    @property
+    def email(self):
+        return f"{self.username}@example.com" 
+
+    @email.setter
+    def email(self, value):
+        pass  
+
+    last_login = models.DateTimeField(auto_now=True, null=True, blank=True) 

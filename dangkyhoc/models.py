@@ -3,7 +3,7 @@ from base.models import *
 # Create your models here.
 
 class MonHoc(BaseModel):
-    MaMon=models.CharField(max_length=10,unique=True)
+    MaMon=models.CharField(max_length=10,unique=True,primary_key=True)
     TenMon=models.CharField(max_length=100)
     SoTinChi=models.IntegerField()
     SoTietLyThuyet=models.IntegerField()
@@ -14,11 +14,11 @@ class MonHoc(BaseModel):
 
 class DieuKienTienQuyet(BaseModel):
     ID=models.AutoField(primary_key=True)
-    MaMon=models.ForeignKey(MonHoc,on_delete=models.CASCADE,related_name='MaMon')
-    MaMonTienQuyet=models.ForeignKey(MonHoc,on_delete=models.CASCADE,related_name='MaMonTienQuyet')
+    MaMon=models.ForeignKey(MonHoc,on_delete=models.CASCADE,related_name='Mon_chinh')
+    MaMonTienQuyet=models.ForeignKey(MonHoc,on_delete=models.CASCADE,related_name='mon_tien_quyet') 
 
 class DangKyHocPhan(BaseModel):
-    MaLopHocPhan=models.CharField(max_length=10,unique=True)
+    MaLopHocPhan=models.CharField(max_length=10,unique=True,primary_key=True)
     GioHoc=models.CharField(max_length=100)
     PhongHoc=models.CharField(max_length=100)
     MaGiangVien=models.ForeignKey(GiangVien,on_delete=models.CASCADE)
