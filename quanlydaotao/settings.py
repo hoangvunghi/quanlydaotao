@@ -103,9 +103,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+BACKEND_URL='http://127.0.0.1:8000/api'
+SECURITY_PASSWORD_SALT='django-insecure-vbxryn#ia%r4f$mm_5mazl3aw@l-6bb1t1dvqfpxt8#k#fptb3'
 AUTH_USER_MODEL='base.UserAccount'
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'test12202023test@gmail.com'
+EMAIL_HOST_PASSWORD = 'prymsxigzsntalpj'
+EMAIL_USE_TLS = True
 
 LANGUAGE_CODE = 'en-us'
 
