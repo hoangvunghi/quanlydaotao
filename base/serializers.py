@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Khoa, GiangVien, Lop, SinhVien, UserAccount
+from .models import *
 
 class ForgotPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -35,6 +35,13 @@ class LopSerializer(serializers.ModelSerializer):
 class SinhVienSerializer(serializers.ModelSerializer):
     class Meta:
         model = SinhVien
+        fields = '__all__'
+
+class ThongBaoSerializer(serializers.ModelSerializer):
+    MaGV = GiangVienSerializer(read_only=True)
+    MaLop = LopSerializer(read_only=True)
+    class Meta:
+        model = ThongBao
         fields = '__all__'
 
 class UserAccountSerializer(serializers.ModelSerializer):

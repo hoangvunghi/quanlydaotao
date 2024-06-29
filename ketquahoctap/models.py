@@ -22,3 +22,7 @@ class KetQuaHocTap(BaseModel):
     TongKetKN3=models.FloatField(blank=True,null=True)
     TongKetKN4=models.FloatField(blank=True,null=True)
     Status=models.CharField(max_length=20,default='Chưa qua')
+
+    class Meta:
+        verbose_name='Kết quả học tập'
+        verbose_name_plural='Kết quả học tập'
