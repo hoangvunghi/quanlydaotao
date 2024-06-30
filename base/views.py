@@ -295,11 +295,6 @@ def update_infor(request, pk):
         return Response({"message": "Update successful", "data": serialized_data, "status": status.HTTP_200_OK}, status=status.HTTP_200_OK)
     
 ##thông báo
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from .models import ThongBao
-from .serializers import ThongBaoSerializer
 
 @api_view(['GET', 'POST'])
 def thongbao_list_create(request):
