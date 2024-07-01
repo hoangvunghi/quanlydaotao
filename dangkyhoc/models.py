@@ -24,7 +24,7 @@ class DieuKienTienQuyet(BaseModel):
         verbose_name_plural='Điều kiện tiên quyết'
 class DangKyHocPhan(BaseModel):
     MaLopHocPhan=models.CharField(max_length=10,unique=True,primary_key=True)
-    GioHoc=models.CharField(max_length=100)
+    GioHoc=models.CharField(max_length=100) #có thể có nhiều giờ học vào các thứ khác nhau, ví dụ giờ 1-3 thứ 2, giờ 4-6 thứ 3 nên ta sẽ lưu như sau: 1-3 thứ 2, 4-6 thứ 3
     PhongHoc=models.CharField(max_length=100)
     MaGiangVien=models.ForeignKey(GiangVien,on_delete=models.CASCADE)
     SoLuongToiDa=models.IntegerField()
