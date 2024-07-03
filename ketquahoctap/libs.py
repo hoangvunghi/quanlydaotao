@@ -76,3 +76,4 @@ def diem_tong_ket(mamon, masv):
         diem_tong_ket = max(diem_tong_ket, EXCEPTIONAL_SCORE_THRESHOLD)
 
     return diem_tong_ket
+

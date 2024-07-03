@@ -4,6 +4,7 @@ from .models import *
 from .serializers import *
 from rest_framework.response import Response
 from rest_framework import status
+from .libs import *
 # Create your views here.
 
 @api_view(['GET', 'POST'])
@@ -70,15 +71,18 @@ def cap_nhat_diem_qua_trinh(request,pk):
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-# @api_view(['PATCH'])
-# def cap_nhat_diem_tong_ket(request,pk):
-#     try:
-#         ket_qua = KetQuaHocTap.objects.get(ID=pk)
-#     except KetQuaHocTap.DoesNotExist:
-#         return Response({'error': 'ketqua not found'}, status=status.HTTP_404_NOT_FOUND)
-#     if ket_qua.DiemQuaTrinh is None or ket_qua.DiemQuaTrinh < 4 :
-#         return Response({'error': 'Chưa cập nhật điểm quá trình hoặc không thể cập nhật do trượt môn'}, status=status.HTTP_400_BAD_REQUEST)
-#     # tính điểm bằng điểm tổng kết hoặc học lại
-#     if ket_qua.DiemThi is None:
-#         serializer = KetQuaHocTapSerializer(ket_qua, data=request.data, partial=True)
-    
+@api_view(['PATCH'])
+def cap_nhat_diem_tong_ket(request,pk):
+    try:
+        ket_qua = KetQuaHocTap.objects.get(ID=pk)
+    except KetQuaHocTap.DoesNotExist:
+        return Response({'error': 'ketqua not found'}, status=status.HTTP_404_NOT_FOUND)
+    if ket_qua.DiemQuaTrinh is None or ket_qua.DiemQuaTrinh < 4 :
+        return Response({'error': 'Chưa cập nhật điểm quá trình hoặc không thể cập nhật do trượt môn'}, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'PATCH':
+        serializer = KetQuaHocTapSerializer(ket_qua, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

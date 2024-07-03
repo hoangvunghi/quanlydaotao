@@ -1,7 +1,6 @@
 from django.db import models
 from base.models import *
 from dangkyhoc.models import *
-# Create your models here.
 
 class KetQuaHocTap(BaseModel):
     ID=models.AutoField(primary_key=True)
@@ -27,7 +26,6 @@ class KetQuaHocTap(BaseModel):
     DiemThiLai3=models.FloatField(blank=True,null=True,default=0)
     DiemThiLai4=models.FloatField(blank=True,null=True,default=0)
     DiemThiLai=models.FloatField(blank=True,null=True)
-
     class Meta:
         verbose_name='Kết quả học tập'
         verbose_name_plural='Kết quả học tập'
@@ -35,18 +33,16 @@ class KetQuaHocTap(BaseModel):
 class HeSoMonHoc(BaseModel):
     ID=models.AutoField(primary_key=True)
     MaMon=models.ForeignKey(MonHoc,on_delete=models.CASCADE)
-    HeSoDiemQuaTrinh=models.FloatField()
-    HeSoTongKet=models.FloatField()
-    HeSoKN1=models.FloatField()
-    HeSoKN2=models.FloatField()
-    HeSoKN3=models.FloatField()
-    HeSoKN4=models.FloatField()
-    HeSoTongKetKN1=models.FloatField()
-    HeSoTongKetKN2=models.FloatField()
-    HeSoTongKetKN3=models.FloatField()
-    HeSoTongKetKN4=models.FloatField()
-    HeSoTongKet=models.FloatField()
-    HeSoDiemThiLai=models.FloatField()
+    HeSoDiemQuaTrinh=models.FloatField(default= 0.3)
+    HeSoTongKet=models.FloatField(default=0.7)
+    HeSoKN1=models.FloatField(default=1)
+    HeSoKN2=models.FloatField(default=0)
+    HeSoKN3=models.FloatField(default=0)
+    HeSoKN4=models.FloatField(default=0)
+    HeSoTongKetKN1=models.FloatField(default=1)
+    HeSoTongKetKN2=models.FloatField(default=0)  
+    HeSoTongKetKN3=models.FloatField(default=0)
+    HeSoTongKetKN4=models.FloatField(default=0)
 
     class Meta:
         verbose_name='Hệ số môn học'
